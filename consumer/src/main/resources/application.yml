@@ -10,3 +10,8 @@ eureka:
     # 服务注册中心地址
     serviceUrl:
       defaultZone: http://localhost:8000/eureka/
+
+feign:
+  hystrix:
+    # 打开熔断器
+    enabled: true
