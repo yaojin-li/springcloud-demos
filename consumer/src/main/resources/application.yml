@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: spring-cloud-consumer
+server:
+  port: 9001
+
+eureka:
+  # 服务提供者配置
+  client:
+    # 服务注册中心地址
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
