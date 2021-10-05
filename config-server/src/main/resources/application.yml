@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: spring-cloud-config-server
+  cloud:
+    config:
+      server:
+        git:
+          # 建议github
+          uri: https://github.com/yaojin-li/springcloud-demos
+          search-paths: config
+#          uri: E:/temp/localgit/
+#          search-paths: /**
+          username: li-xj
+          password: a199401b
+          basedir: E:/temp
+          force-pull: true
+server:
+  port: 8005
+
+#
+eureka:
+  # 服务提供者配置
+  client:
+    # 服务注册中心地址
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+
+#
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /
+
+# 文件名称：
+# system-dev.yaml、system-test.yaml、system-pro.yaml
+
+# 访问路径：http://localhost:8005/spring-cloud-config-server(spring.application.name)/dev|test|pro
+# 访问路径：http://localhost:8005/config/dev
+# http://localhost:8005/spring-cloud-config-server/dev
+
+# http://localhost:8005/system(配置文件的公共前缀)/dev
+# 访问完整信息

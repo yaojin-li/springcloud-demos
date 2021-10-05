@@ -28,6 +28,7 @@
         <module>consumer-hystrix</module>
         <module>consumer-hystrix-dashboard</module>
         <module>hystrix-dashboard-turbine</module>
+
     </modules>
 
     <dependencies>
