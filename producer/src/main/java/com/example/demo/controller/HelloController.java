@@ -20,4 +20,9 @@ public class HelloController {
     public String index(@RequestParam String name) {
         return "hello " + name + "，this is first messge";
     }
+
+    @RequestMapping("/hello2")
+    public String index2(@RequestParam String name) {
+        return "hello2 " + name + "，this is first messge";
+    }
 }

@@ -49,3 +49,25 @@ Spring Cloud Hoxton -->    Spring Boot 2.2.x
 Spring Cloud Greenwich -->    Spring Boot 2.1.x
 Spring Cloud Finchley -->    Spring Boot 2.0.x
 Spring Cloud Edgware -->    Spring Boot 1.5.x
+
+- Hystrix:Unable to connect to Command Metric Stream
+https://blog.csdn.net/qq_38361800/article/details/106424791
+yaml文件加入：
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+      base-path: /
+```
+
+- java.lang.NoSuchMethodError: org.springframework.util.StringUtils.matchesCharacter(Ljava/lang/String;C)Z
+```xml
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <!--<version>5.2.10.RELEASE</version>-->
+        </dependency>
+```
+采用spring-web最新版本。

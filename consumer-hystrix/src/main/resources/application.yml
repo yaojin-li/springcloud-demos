@@ -1,16 +1,14 @@
 spring:
   application:
-    name: spring-cloud-consumer
+    name: spring-cloud-consumer-hystrix
   main:
     allow-bean-definition-overriding: true
 
 server:
-  port: 9005
+  port: 9003
 
 eureka:
-  # 服务提供者配置
   client:
-    # 服务注册中心地址
     serviceUrl:
       defaultZone: http://localhost:8000/eureka/
 

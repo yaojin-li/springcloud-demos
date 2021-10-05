@@ -1,11 +1,8 @@
 spring:
   application:
-    name: spring-cloud-consumer
-  main:
-    allow-bean-definition-overriding: true
-
+    name: spring-cloud-consumer-hystrix-dashboard
 server:
-  port: 9005
+  port: 9001
 
 eureka:
   # 服务提供者配置
@@ -18,3 +15,10 @@ feign:
   hystrix:
     # 打开熔断器
     enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+      base-path: /

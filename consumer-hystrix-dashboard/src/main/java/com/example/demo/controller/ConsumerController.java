@@ -1,12 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.feign.ConsumerRemote;
+import com.example.demo.feign.HelloRemote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.rmi.Remote;
 
 /**
  * @Description: --------------------------------------
@@ -21,11 +19,11 @@ import java.rmi.Remote;
 public class ConsumerController {
 
     @Autowired
-    ConsumerRemote remote;
+    HelloRemote HelloRemote;
 
-    @RequestMapping("/hello2/{name}")
+    @RequestMapping("/hello/{name}")
     public String index(@PathVariable("name") String name) {
-        return remote.hello2(name);
+        return HelloRemote.hello(name);
     }
 
 }
