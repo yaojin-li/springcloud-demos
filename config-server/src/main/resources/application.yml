@@ -19,11 +19,18 @@ server:
 
 #
 eureka:
+  instance:
+    # 使用ip代替实例名
+    prefer-ip-address: true
+    # 实例的主机名
+    hostname: ${spring.cloud.client.ip-address}
+    # 实例的 ID 规则
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
   # 服务提供者配置
   client:
     # 服务注册中心地址
     serviceUrl:
-      defaultZone: http://localhost:8000/eureka/
+      defaultZone: http://${eureka.instance.hostname}:8000/eureka/
 
 #
 management:
@@ -40,5 +47,12 @@ management:
 # 访问路径：http://localhost:8005/config/dev
 # http://localhost:8005/spring-cloud-config-server/dev
 
-# http://localhost:8005/system(配置文件的公共前缀)/dev
-# 访问完整信息
+# http://localhost:8005/system(配置文件的公共前缀)/dev  -> 访问完整信息
+# http://localhost:8005/system-dev.yml  -> 访问system-dev.yml文件中的所有内容
+
+## 仓库中的配置文件会被转换成web接口，接口访问规则：
+#  /{application}/{profile}[/{label}]
+#  /{application}-{profile}.yml
+#  /{label}/{application}-{profile}.yml
+#  /{application}-{profile}.properties
+#  /{label}/{application}-{profile}.properties
