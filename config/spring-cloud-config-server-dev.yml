@@ -3,5 +3,5 @@ spring:
     active: dev
     
 config:
-  info: config info devdevdevdevvvvllll
+  info: config info dev33
  
