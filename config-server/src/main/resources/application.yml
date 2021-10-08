@@ -11,7 +11,7 @@ spring:
 #          uri: E:/temp/localgit/
 #          search-paths: /**
           username: li-xj
-          password: a199401b
+          password: tawjeirsadfjkslajjdaj13
           basedir: E:/temp
           force-pull: true
 server:
