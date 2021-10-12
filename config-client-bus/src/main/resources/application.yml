@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: spring-cloud-config-client-bus
+
+server:
+  port: 8007
+
+# springcloud配置中心配置更新
+# include中包含refresh、关闭安全限制等功能。
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

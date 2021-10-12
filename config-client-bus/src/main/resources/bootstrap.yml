@@ -1,0 +1,44 @@
+## 与 Spring Cloud Config 相关的属性必须配置在 bootstrap.yml 中.
+## bootstrap配置会系统会优先加载；加载优先级比application高
+spring:
+  cloud:
+    config:
+      # git 分支
+      label: master
+      # 对应的配置文件为 spring-cloud-config-server-dev.yml
+      name: spring-cloud-config-server
+      # 对应 spring-cloud-config-server-dev.yml 文件中的 dev 配置模块
+      profile: dev
+      # 配置中心（springcloud-config-server-bus config服务端）的具体地址
+      uri: http://localhost:8008/
+      discovery:
+        enabled: true
+        # 指定server应用名
+        service-id: spring-cloud-config-server-bus
+    bus:
+      trace:
+        # 开启消息跟踪
+        enabled: true
+  rabbitmq:
+    addresses: 192.168.100.133:5672,192.168.100.132:5672,192.168.100.131:5672
+#    host: 192.168.100.133
+#    port: 5672
+    username: root
+    password: root
+
+#
+eureka:
+  instance:
+    # 使用 ip 代替实例名
+    prefer-ip-address: true
+    # 实例的主机名
+    hostname: ${spring.cloud.client.ip-address}
+    # 实例的 ID 规则
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+
+  # 服务提供者配置
+  client:
+    # 服务注册中心地址
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+
