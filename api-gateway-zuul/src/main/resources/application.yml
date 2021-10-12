@@ -5,3 +5,35 @@ spring:
 server:
   port: 8009
 
+zuul:
+  routes:
+    # 访问 http://localhost:8009/it/spring-cloud，请求重定向
+    baidu:
+      path: /it/**
+      url: http://www.ityouknow.com/
+    # 访问 http://localhost:8009/helloZ/helloZuul?name=yaojin，请求重定向到注册中心端口URL映射。
+    # 其中，path的helloZ为一级映射路径，helloZuul为接口@RequestMapping注解中的映射地址
+    hello:
+      path: /helloZ/**
+      # 指定转发到单一的服务ip与端口
+      url: http://localhost:9002/
+      # 配置多个服务时，通过配置serviceId调用服务集群中的接口功能
+      # serviceId: spring-cloud-producer
+
+
+#
+eureka:
+  instance:
+    # 使用 ip 代替实例名
+    prefer-ip-address: true
+    # 实例的主机名
+    hostname: ${spring.cloud.client.ip-address}
+    # 实例的 ID 规则
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+
+  # 服务提供者配置
+  client:
+    # 服务注册中心地址
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+
