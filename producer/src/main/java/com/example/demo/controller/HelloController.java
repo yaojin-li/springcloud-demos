@@ -31,5 +31,9 @@ public class HelloController {
         return "helloZuul " + name + "，this is first messge";
     }
 
+    @RequestMapping("/zuulToken")
+    public String zuulToken(@RequestParam String name) {
+        return "zuulToken " + name + "，this is first messge";
+    }
 
 }
