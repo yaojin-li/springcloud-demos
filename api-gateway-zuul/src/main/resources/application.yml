@@ -19,7 +19,8 @@ zuul:
       url: http://localhost:9002/
       # 配置多个服务时，通过配置serviceId调用服务集群中的接口功能
       # serviceId: spring-cloud-producer
-
+  ## 开启zuul retry
+  retryable: true
 
 #
 eureka:
