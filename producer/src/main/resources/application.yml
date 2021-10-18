@@ -1,6 +1,13 @@
 spring:
   application:
     name: spring-cloud-producer
+  zipkin:
+    # zipkin 默认地址
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      percentage: 1.0
+
 server:
   port: 9002
 

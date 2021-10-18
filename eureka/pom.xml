@@ -42,6 +42,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.zipkin.java</groupId>
+            <artifactId>zipkin-autoconfigure-ui</artifactId>
+        </dependency>
+
     </dependencies>
 
     <!-- 解决 @EnableDiscoveryClient 注解无法引用问题 -->
