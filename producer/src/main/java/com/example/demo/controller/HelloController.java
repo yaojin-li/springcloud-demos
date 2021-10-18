@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 public class HelloController {
+    Logger logger = LoggerFactory.getLogger(HelloController.class);
 
     @RequestMapping("/hello")
     public String index(@RequestParam String name) {
@@ -34,6 +37,17 @@ public class HelloController {
     @RequestMapping("/zuulToken")
     public String zuulToken(@RequestParam String name) {
         return "zuulToken " + name + "，this is first messge";
+    }
+
+    @RequestMapping("/zuulRetry")
+    public String zuulRetry(@RequestParam String name) {
+        logger.info("request is:" + name);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "zuulRetry " + name + "，this is first messge";
     }
 
 }

@@ -19,8 +19,30 @@ zuul:
       url: http://localhost:9002/
       # 配置多个服务时，通过配置serviceId调用服务集群中的接口功能
       # serviceId: spring-cloud-producer
-  ## 开启zuul retry
+  # 开启zuul retry
   retryable: true
+  # 使用线程池做隔离，默认是信号量SEMAPHORE（信号量）
+  ribbon-isolation-strategy: thread
+  thread-pool:
+    # 线程名称前缀
+    thread-pool-key-prefix: zuulgw
+    # 为不同的路由使用不同的线程池
+    use-separate-thread-pools: true
+
+# 要支持重试的微服务的配置
+# 此时请求的链接为：http://localhost:8009/spring-cloud-producer/zuulRetry?name=yaojin
+spring-cloud-producer:
+  ribbon:
+    #ribbon请求连接的超时时间
+    ConnectTimeout: 1000
+    #请求处理的超时时间
+    ReadTimeout: 1000
+    #对所有请求操作都进行重试。设置为false，表示只会对get请求进行重试
+    OkToRetryOnAllOperations: true
+    #对服务实例的重试次数（除去首次访问外）。默认值为0，如果不设置，则只会有首次访问，不会有重试
+    MaxAutoRetries: 3
+    #切换到另一个实例的次数。默认值为1，如果不设置，会有一次切换
+    MaxAutoRetriesNextServer: 0
 
 #
 eureka:
