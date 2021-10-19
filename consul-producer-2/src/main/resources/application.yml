@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: spring-cloud-consul-producer
+  cloud:
+    consul:
+      host: localhost
+      # consul服务默认端口
+      port: 8500
+      # 注册到consul的服务名称
+      discovery:
+        service-name: consul-service-producer
+
+server:
+  port: 8503
