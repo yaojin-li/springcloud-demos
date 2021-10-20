@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: spring-cloud-api-gateway
+  cloud:
+    gateway:
+      ## 配置id为url-proxy-1的路由规则，访问 http://localhost:8010/csdn/HeyShHeyou时，自动转发到https://blog.csdn.net/HeyShHeyou
+      routes:
+        # 自定义的路由 ID，保持唯一
+      - id: url-proxy-1
+        # 目标服务地址
+        uri: https://blog.csdn.net
+        predicates:
+          # 路由条件（predicate 接受一个输入参数，返回一个布尔值结果）
+        - Path=/csdn/**
+
+      ## 配置id为url-proxy-2的路由规则，访问 http://localhost:8010/spring-cloud时，自动转发到http://www.ityouknow.com/spring-cloud
+      - id: url-proxy-2
+        uri: http://www.ityouknow.com
+        predicates:
+        - Path=/spring-cloud
+
+      ## 配置id为url-proxy-4的路由规则。路径、时间、host、请求方式、请求路径、请求参数、请求IP地址、cookie
+      - id: url-proxy-4
+        uri: http://www.ityouknow.com
+        predicates:
+        - Path=/spring-cloud
+        - Host=**.foo.org
+        - Method=GET
+        - Header=X-Request-Id, \d+
+        - Query=baz
+        - Cookie=chocolate, ch.p
+        - After=2018-01-20T06:06:06+08:00[Asia/Shanghai]
+
+server:
+  port: 8010
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+
