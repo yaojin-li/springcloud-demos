@@ -52,7 +52,7 @@ public class HelloController {
 
     @RequestMapping("/foo")
     public String foo(String foo) {
-        return "hello" + foo;
+        return "hello producer 1" + foo;
     }
 
 }

@@ -1,40 +1,95 @@
 spring:
   application:
     name: spring-cloud-api-gateway
+
+  # 基于redis的gateway限流
+  redis:
+    host: localhost
+    port: 6379
+
   cloud:
     gateway:
-      ## 配置id为url-proxy-1的路由规则，访问 http://localhost:8010/csdn/HeyShHeyou时，自动转发到https://blog.csdn.net/HeyShHeyou
+      discovery:
+        locator:
+          # 注册服务到注册中心，通过 serviceId 转发到具体的服务实例。
+          # 默认 false。设为 true 便开启通过服务中心的自动根据 serviceId 创建路由的功能。
+          # 此时访问地址为：http://localhost:8010/SPRING-CLOUD-API-GATEWAY/about
+          enabled: true
+
+      ## 配置id为url-proxy-1的路由规则，访问 http://localhost:8010/spring-cloud时，自动转发到http://www.ityouknow.com/spring-cloud
       routes:
         # 自定义的路由 ID，保持唯一
       - id: url-proxy-1
         # 目标服务地址
-        uri: https://blog.csdn.net
+        uri: http://www.ityouknow.com
         predicates:
           # 路由条件（predicate 接受一个输入参数，返回一个布尔值结果）
-        - Path=/csdn/**
+        - Path=/spring-cloud
 
-      ## 配置id为url-proxy-2的路由规则，访问 http://localhost:8010/spring-cloud时，自动转发到http://www.ityouknow.com/spring-cloud
+      ## 配置id为url-proxy-2的路由规则
       - id: url-proxy-2
-        uri: http://www.ityouknow.com
+        uri: http://localhost:9002       # 针对单个服务
+#        uri: lb://spring-cloud-producer   # 针对服务集群
+        filters:
+          # 添加设置的参数
+        - AddRequestParameter=foo, bar
         predicates:
-        - Path=/spring-cloud
-
-      ## 配置id为url-proxy-4的路由规则。路径、时间、host、请求方式、请求路径、请求参数、请求IP地址、cookie
-      - id: url-proxy-4
-        uri: http://www.ityouknow.com
-        predicates:
-        - Path=/spring-cloud
-        - Host=**.foo.org
         - Method=GET
-        - Header=X-Request-Id, \d+
-        - Query=baz
-        - Cookie=chocolate, ch.p
-        - After=2018-01-20T06:06:06+08:00[Asia/Shanghai]
+
+      ## 配置限流的路由规则
+      - id: url-proxy-3
+        uri: http://localhost:9002
+        predicates:
+        - Method=GET
+        filters:
+        - name: RequestRateLimiter
+          args:
+            # 允许用户每秒处理多少个请求
+            redis-rate-limiter.replenishRate: 10
+            # 令牌桶的容量，允许在一秒钟内完成的最大请求数
+            redis-rate-limiter.burstCapacity: 20
+            # 指定ipAddressKeyResolver的bean实例（在config文件中声明bean实例）。
+            key-resolver: "#{@ipAddressKeyResolver}"
+
+      ## 配置熔断的路由规则
+      - id: url-proxy-4
+        uri: lb://spring-cloud-producer
+        predicates:
+        - Method=GET
+        # gateway 将使用 fallbackcmd 作为名称生成 Hystrix 对象来进行熔断管理
+        filters:
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            # fallback回调路径
+            fallbackUri: forward:/fallbackUrl
+
+      ## 配置重试的路由规则
+      - id: url-proxy-5
+        uri: lb://spring-cloud-producer
+        predicates:
+        - Path=/retry
+        filters:
+        - name: Retry
+          args:
+            # 重试次数，默认三次
+            retries: 3
+            # HTTP 的状态返回码
+            statuses: BAD_GATEWAY
 
 server:
   port: 8010
 
+
 eureka:
+  instance:
+    # 使用 ip 代替实例名
+    prefer-ip-address: true
+    # 实例的主机名
+    hostname: ${spring.cloud.client.ip-address}
+    # 实例的 ID 规则
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+
   client:
     serviceUrl:
       defaultZone: http://localhost:8000/eureka/
